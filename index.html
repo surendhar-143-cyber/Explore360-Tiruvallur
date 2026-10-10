@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="description" content="Explore360 Tiruvallur - Your smart travel companion for discovering the hidden beauty, heritage, culture, hotels and restaurants of Tiruvallur District, Tamil Nadu, India.">
+  <meta name="keywords" content="Tiruvallur, tourism, travel, Tamil Nadu, India, temples, Pulicat Lake, Poondi Reservoir, Hotels, Restaurants, Booking">
+  <meta name="author" content="Explore360 Tiruvallur">
+  <title>Explore360 Tiruvallur | Discover. Explore. Experience Tiruvallur.</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Manifest & Service Worker PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#D4A843">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then((reg) => {
+          console.log('⚡ ServiceWorker registered for 24/7 offline mobile access:', reg.scope);
+        }).catch((err) => console.log('SW registration notice:', err));
+      });
+    }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+</head>
+<body>
+
+  <!-- ==================== CUSTOM MOVING CURSOR ==================== -->
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+  <div class="custom-cursor-ring" id="cursorRing"></div>
+
+  <!-- ==================== LOADING SCREEN ==================== -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-logo">Explore360</div>
+    <div class="loading-bar">
+      <div class="loading-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">E3</div>
+        <span>Explore360</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#destinations">Destinations</a>
+        <a href="#hotels">Hotels</a>
+        <a href="#restaurants">Restaurants</a>
+        <a href="#vehicles">Vehicles</a>
+        <a href="#experience">Explore</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="javascript:void(0)" onclick="openMyBookingsModal()" style="color: var(--gold); font-weight: 600;">📋 Track Booking</a>
+      </div>
+
+      <div class="nav-cta" style="display: flex; align-items: center; gap: 8px;">
+        <button onclick="openMyBookingsModal()" class="btn btn-outline btn-sm" style="border-color: var(--gold); color: var(--gold); padding: 6px 12px; font-size: 0.8rem;">📋 Track Booking</button>
+        <button onclick="openLoginModal()" class="btn btn-outline btn-sm">Register / Log In</button>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation -->
+  <div class="nav-mobile" id="navMobile">
+    <a href="#home">Home</a>
+    <a href="#destinations">Destinations</a>
+    <a href="#hotels">Hotels</a>
+    <a href="#restaurants">Restaurants</a>
+    <a href="#experience">Explore</a>
+    <a href="#testimonials">Reviews</a>
+    <div style="border-top: 1px solid var(--gray-700); margin: 0.8rem 0; padding-top: 0.8rem;">
+      <div style="font-size: 0.75rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-accent); margin-bottom: 0.6rem; text-align: center;">⚡ Direct 1-by-1 Mobile Bookings</div>
+      <button onclick="closeNavMobile(); openMyBookingsModal();" class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; text-align: left; justify-content: flex-start; gap: 8px; border-color: var(--gold); color: var(--gold);">📋 Track & Manage My Bookings</button>
+      <button onclick="closeNavMobile(); openBookingModal('Hotel Room Booking', 'Select property and check-in date');" class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; text-align: left; justify-content: flex-start; gap: 8px;">🏨 Book Hotel Room</button>
+      <button onclick="closeNavMobile(); openTableBookingModal();" class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; text-align: left; justify-content: flex-start; gap: 8px;">🍽️ Reserve Dining Table</button>
+      <button onclick="closeNavMobile(); openVehicleBookingModal();" class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; text-align: left; justify-content: flex-start; gap: 8px;">🚗 Rent Vehicle / Cab</button>
+      <button onclick="closeNavMobile(); openTourBookingModal();" class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; text-align: left; justify-content: flex-start; gap: 8px;">🗺️ Book Explore Tour</button>
+      <button onclick="closeNavMobile(); openPlanMyTripModal();" class="btn btn-primary" style="width: 100%; margin-top: 0.3rem; text-align: center;">🌟 Plan Complete Trip</button>
+    </div>
+  </div>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1920&q=80&auto=format&fit=crop" alt="Scenic panoramic view of Tiruvallur landscape at golden hour">
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse"></span>
+          Discover Tamil Nadu
+        </div>
+
+        <h1 class="hero-title">
+          Explore<span class="gold-text">360</span><br>
+          Tiruvallur
+        </h1>
+
+        <p class="hero-tagline">"Discover. Explore. Experience Tiruvallur."</p>
+
+        <p class="hero-description">
+          Your smart travel companion for discovering the hidden beauty, sacred heritage, coastal nature, top-rated hotels, and authentic South Indian cuisine across Tiruvallur District.
+        </p>
+
+
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-number" data-count="50" data-suffix="+">50+</div>
+            <div class="hero-stat-label">Attractions</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number" data-count="25" data-suffix="+">25+</div>
+            <div class="hero-stat-label">Temples</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number" data-count="10" data-suffix="K+">10K+</div>
+            <div class="hero-stat-label">Happy Travelers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll to explore</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ==================== DESTINATIONS SECTION ==================== -->
+  <section class="section-darker" id="destinations">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/></svg>
+          Popular Destinations
+        </div>
+        <h2 class="section-title">Discover <span class="gold">Tiruvallur's</span> Treasures</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          From historic temples and reservoirs to serene coastal lagons and bird sanctuaries — explore the best of Tiruvallur District.
+        </p>
+      </div>
+
+      <!-- Filters -->
+      <div class="destinations-filters reveal">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="nature">Nature</button>
+        <button class="filter-btn" data-filter="temples">Temples</button>
+        <button class="filter-btn" data-filter="wildlife">Wildlife</button>
+        <button class="filter-btn" data-filter="beaches">Beaches</button>
+      </div>
+
+      <!-- Destination Cards Grid -->
+      <div class="destinations-grid">
+
+        <!-- Card 1: Poondi Reservoir -->
+        <div class="dest-card reveal" data-category="nature">
+          <div class="dest-card-img">
+            <img src="images/poondi_reservoir.jpg" alt="Poondi Reservoir dam with water flowing" loading="lazy">
+            <span class="dest-card-category">Nature</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Poondi Reservoir</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Poondi, Tiruvallur District
+            </div>
+            <p class="dest-card-desc">Major freshwater reservoir and historic dam supplying water to Chennai. Famous for scenic water releases, surrounding greenery, and peaceful sunsets.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.8
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('poondi')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Poondi Reservoir')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Pulicat Lake -->
+        <div class="dest-card reveal" data-category="nature">
+          <div class="dest-card-img">
+            <img src="images/pulicat_lake.png" alt="Pulicat Lake flamingos wading in shallow lagoon water" loading="lazy">
+            <span class="dest-card-category">Nature</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Pulicat Lake</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pulicat, Tiruvallur District
+            </div>
+            <p class="dest-card-desc">India's second largest brackish water lagoon. A haven for thousands of Greater Flamingos and migratory birds with serene boating experiences.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.9
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('pulicat')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Pulicat Lake')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Pulicat Bird Sanctuary -->
+        <div class="dest-card reveal" data-category="wildlife">
+          <div class="dest-card-img">
+            <img src="images/pulicat_lake.png" alt="Flamingos at Pulicat Bird Sanctuary" loading="lazy">
+            <span class="dest-card-category">Wildlife</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Pulicat Bird Sanctuary</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pulicat, Tiruvallur District
+            </div>
+            <p class="dest-card-desc">World-renowned bird sanctuary protecting flamingos, pelicans, herons, and rare migratory aquatic birds. Ideal for nature photography.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.8
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('bird_sanctuary')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Pulicat Bird Sanctuary')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Veeraraghava Perumal Temple -->
+        <div class="dest-card reveal" data-category="temples">
+          <div class="dest-card-img">
+            <img src="images/veeraraghava_temple.jpg" alt="Veeraraghava Perumal Temple sacred gopuram at sunset" loading="lazy">
+            <span class="dest-card-category">Temples</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Sri Veeraraghava Perumal Temple</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tiruvallur Town Center
+            </div>
+            <p class="dest-card-desc">Ancient Divya Desam temple dedicated to Lord Vishnu. Features grand Dravidian architecture, sacred tank (Hruthtapanasini), and healing divine blessings.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                5.0
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('veeraraghava')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Sri Veeraraghava Perumal Temple')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Tiruttani Murugan Temple -->
+        <div class="dest-card reveal" data-category="temples">
+          <div class="dest-card-img">
+            <img src="images/tiruttani_temple.png" alt="Tiruttani Murugan Temple glowing gopuram at dusk" loading="lazy">
+            <span class="dest-card-category">Temples</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Tiruttani Murugan Temple</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tiruttani Hilltop, Tiruvallur
+            </div>
+            <p class="dest-card-desc">One of the six sacred abodes of Lord Murugan, perched atop a scenic hill with 365 steps. Offers panoramic views, spiritual serenity, and grand festival celebrations.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.9
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('tiruttani')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Tiruttani Murugan Temple')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Pazhaverkadu -->
+        <div class="dest-card reveal" data-category="beaches">
+          <div class="dest-card-img">
+            <img src="images/pazhaverkadu_beach.jpg" alt="Pazhaverkadu golden sea shore and ocean waves" loading="lazy">
+            <span class="dest-card-category">Beaches</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Pazhaverkadu Coastal Beach</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pazhaverkadu (Pulicat Coast)
+            </div>
+            <p class="dest-card-desc">Pristine golden beach along the Bay of Bengal featuring Dutch historical landmarks, traditional fishing boats, and relaxing sea breeze.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.7
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('pazhaverkadu')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Pazhaverkadu Coastal Beach')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7: Sri Panchamukha Anjaneyaswami Temple -->
+        <div class="dest-card reveal" data-category="temples">
+          <div class="dest-card-img">
+            <img src="images/panchamukha_anjaneya.png" alt="Sri Panchamukha Anjaneyaswami Temple golden idol" loading="lazy">
+            <span class="dest-card-category">Temples</span>
+            <button class="dest-card-favorite" aria-label="Add to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Sri Panchamukha Anjaneyaswami Temple</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tiruvallur District
+            </div>
+            <p class="dest-card-desc">Home to the towering 5-faced golden Lord Hanuman idol standing tall in divine majesty, attracting devotees across South India.</p>
+            <div class="dest-card-footer">
+              <div class="dest-card-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                5.0
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button onclick="openDestDetail('panchamukha')" class="btn btn-outline btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Explore</button>
+                <button onclick="openTourBookingModal('Sri Panchamukha Anjaneyaswami Temple')" class="btn btn-primary btn-sm" style="padding: 6px 10px; font-size: 0.76rem;">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== HOTELS BOOKING SECTION ==================== -->
+  <section class="section-dark" id="hotels">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title">Hotels & <span class="gold">Stays</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          Find luxury resorts, comfortable family stays, and budget-friendly hotels near Tiruvallur temples and attractions.
+        </p>
+      </div>
+
+      <!-- Hotel Filters -->
+      <div class="destinations-filters reveal">
+        <button class="filter-btn active" data-filter="all">All Stays</button>
+        <button class="filter-btn" data-filter="luxury">Luxury</button>
+        <button class="filter-btn" data-filter="budget">Budget</button>
+        <button class="filter-btn" data-filter="family">Family</button>
+        <button class="filter-btn" data-filter="resort">Resort</button>
+      </div>
+
+      <!-- Hotel Cards Grid -->
+      <div class="destinations-grid">
+
+        <!-- Hotel 1 -->
+        <div class="dest-card hotel-card reveal" data-category="luxury">
+          <div class="dest-card-img">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=640&q=80&auto=format&fit=crop" alt="Regency Tiruttani Luxury Hotel" loading="lazy">
+            <span class="dest-card-category">Luxury</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Regency Tiruttani by GRT Hotels</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Near Tiruttani Murugan Temple
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">AC Rooms</span>
+              <span class="facility-badge">Multi-Cuisine Dining</span>
+              <span class="facility-badge">Free Wi-Fi</span>
+              <span class="facility-badge">Valet Parking</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹3,499 <span class="price-subtext">/ night</span></div>
+                <div class="dest-card-rating">⭐ 4.8 (120+ reviews)</div>
+              </div>
+              <button onclick="openBookingModal('Book Room: Regency Tiruttani', 'Select dates and number of guests for GRT Regency')" class="btn btn-primary btn-sm">Book Room</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hotel 2 -->
+        <div class="dest-card hotel-card reveal" data-category="budget">
+          <div class="dest-card-img">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=640&q=80&auto=format&fit=crop" alt="Hotel Tamil Nadu TTDC Tiruvallur" loading="lazy">
+            <span class="dest-card-category">Budget / Heritage</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Hotel Tamil Nadu (TTDC Tiruvallur)</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Javaharlal Nehru Road, Tiruvallur
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">Government Assured</span>
+              <span class="facility-badge">Garden Lawn</span>
+              <span class="facility-badge">Restaurant</span>
+              <span class="facility-badge">24h Desk</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹1,799 <span class="price-subtext">/ night</span></div>
+                <div class="dest-card-rating">⭐ 4.4 (95+ reviews)</div>
+              </div>
+              <button onclick="openBookingModal('Book Room: Hotel Tamil Nadu', 'Government TTDC Hotel reservation')" class="btn btn-primary btn-sm">Book Room</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hotel 3 -->
+        <div class="dest-card hotel-card reveal" data-category="resort">
+          <div class="dest-card-img">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=640&q=80&auto=format&fit=crop" alt="Pulicat Lake Eco Resort" loading="lazy">
+            <span class="dest-card-category">Resort</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Pulicat Lagoon Eco Resort</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pulicat Lake Front, Pazhaverkadu
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">Lake View Cottages</span>
+              <span class="facility-badge">Private Boating</span>
+              <span class="facility-badge">Fresh Seafood</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹2,899 <span class="price-subtext">/ night</span></div>
+                <div class="dest-card-rating">⭐ 4.7 (80+ reviews)</div>
+              </div>
+              <button onclick="openBookingModal('Book Room: Pulicat Eco Resort', 'Resort cottage booking with boat tour')" class="btn btn-primary btn-sm">Book Room</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hotel 4 -->
+        <div class="dest-card hotel-card reveal" data-category="family">
+          <div class="dest-card-img">
+            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=640&q=80&auto=format&fit=crop" alt="Sri RNS Residency" loading="lazy">
+            <span class="dest-card-category">Family</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">RNS Residency Tiruvallur</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              5 Mins to Veeraraghava Temple
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">Family Suites</span>
+              <span class="facility-badge">24h Room Service</span>
+              <span class="facility-badge">Elevator</span>
+              <span class="facility-badge">AC</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹2,199 <span class="price-subtext">/ night</span></div>
+                <div class="dest-card-rating">⭐ 4.5 (110+ reviews)</div>
+              </div>
+              <button onclick="openBookingModal('Book Room: RNS Residency', 'Family room booking near temple')" class="btn btn-primary btn-sm">Book Room</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== RESTAURANTS SECTION ==================== -->
+  <section class="section-darker" id="restaurants">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          Local Dining & Table Booking
+        </div>
+        <h2 class="section-title">Restaurants & <span class="gold">Table Booking</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          Book a table at Tiruvallur's top fine dining, BBQ grills, traditional pure veg, and multi-cuisine restaurants.
+        </p>
+      </div>
+
+      <!-- Restaurant Filters -->
+      <div class="destinations-filters reveal">
+        <button class="filter-btn active" data-filter="all">All Restaurants</button>
+        <button class="filter-btn" data-filter="veg">Pure Veg</button>
+        <button class="filter-btn" data-filter="nonveg">BBQ & Non-Veg</button>
+        <button class="filter-btn" data-filter="finedine">Fine Dine</button>
+        <button class="filter-btn" data-filter="multicuisine">Multi Cuisine</button>
+      </div>
+
+      <!-- Restaurant Cards Grid -->
+      <div class="destinations-grid">
+
+        <!-- 1. Qazeen Fine Dine Restaurant -->
+        <div class="dest-card restaurant-card reveal" data-category="finedine">
+          <div class="dest-card-img">
+            <img src="images/qazeen_restaurant.png" alt="Qazeen Fine Dine Restaurant interior" loading="lazy">
+            <span class="dest-card-category">Fine Dine</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Qazeen Fine Dine Restaurant</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tiruvallur Town Center
+            </div>
+            <div class="popular-dishes">
+              ✨ <strong>Popular:</strong> Gourmet Indian Thali, Chef's Special Starters, Mocktails
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="dest-card-rating">⭐ 4.9 (420+ reviews)</div>
+              </div>
+              <button onclick="openTableBookingModal('Qazeen Fine Dine Restaurant')" class="btn btn-outline btn-sm">Reserve Table</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Zaira BBQ Restaurant -->
+        <div class="dest-card restaurant-card reveal" data-category="nonveg">
+          <div class="dest-card-img">
+            <img src="images/zaira_restaurant.png" alt="Zaira BBQ Restaurant & Banquet Hall facade" loading="lazy">
+            <span class="dest-card-category">BBQ & Grill</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Zaira BBQ Restaurant & Banquet</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              JN Road, Tiruvallur
+            </div>
+            <div class="popular-dishes">
+              🍗 <strong>Popular:</strong> BBQ Grilled Chicken, Tandoori Platter, Special Biryani
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="dest-card-rating">⭐ 4.8 (380+ reviews)</div>
+              </div>
+              <button onclick="openTableBookingModal('Zaira BBQ Restaurant & Banquet')" class="btn btn-outline btn-sm">Reserve Table</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Hotel Ganga Sweets (Pure Veg) -->
+        <div class="dest-card restaurant-card reveal" data-category="veg">
+          <div class="dest-card-img">
+            <img src="images/ganga_hotel.jpg" alt="Hotel Ganga Sweets Pure Veg building facade" loading="lazy">
+            <span class="dest-card-category">Pure Veg</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Ganga Hotel (Pure Veg & Sweets)</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Main Road, Tiruvallur
+            </div>
+            <div class="popular-dishes">
+              🍛 <strong>Popular:</strong> Ghee Roast Dosa, North & South Indian Meals, Ganga Sweets
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="dest-card-rating">⭐ 4.7 (510+ reviews)</div>
+              </div>
+              <button onclick="openTableBookingModal('Ganga Hotel (Pure Veg)')" class="btn btn-outline btn-sm">Reserve Table</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Nithya Amirtham (Pure Veg) -->
+        <div class="dest-card restaurant-card reveal" data-category="veg">
+          <div class="dest-card-img">
+            <img src="images/nithya_amirtham.jpg" alt="Nithya Amirtham Veg Restaurant facade" loading="lazy">
+            <span class="dest-card-category">Pure Veg</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Nithya Amirtham (Pure Veg)</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tiruvallur Main Entrance
+            </div>
+            <div class="popular-dishes">
+              ☕ <strong>Popular:</strong> Authentic Banana Leaf Meal, Filter Coffee, Traditional Sweets
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="dest-card-rating">⭐ 4.9 (620+ reviews)</div>
+              </div>
+              <button onclick="openTableBookingModal('Nithya Amirtham (Pure Veg)')" class="btn btn-outline btn-sm">Reserve Table</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Lamiya Multi Cuisine Restaurant -->
+        <div class="dest-card restaurant-card reveal" data-category="multicuisine">
+          <div class="dest-card-img">
+            <img src="images/lamiya_restaurant.jpg" alt="Lamiya Multi Cuisine Restaurant facade" loading="lazy">
+            <span class="dest-card-category">Multi Cuisine</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Lamiya Multi Cuisine Restaurant</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tiruvallur Center
+            </div>
+            <div class="popular-dishes">
+              🍜 <strong>Popular:</strong> Special Fried Rice, Dragon Chicken, Arabian Shawarma
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="dest-card-rating">⭐ 4.8 (340+ reviews)</div>
+              </div>
+              <button onclick="openTableBookingModal('Lamiya Multi Cuisine Restaurant')" class="btn btn-outline btn-sm">Reserve Table</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VEHICLES & TRANSPORT BOOKING SECTION ==================== -->
+  <section class="section-dark" id="vehicles">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          Vehicle Rental & Cab Booking
+        </div>
+        <h2 class="section-title">Book <span class="gold">Vehicles</span> & Cabs</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          Rent cars, luxury SUVs, tempo travellers, scooties, or local auto rickshaw tour packages for effortless travel across Tiruvallur.
+        </p>
+      </div>
+
+      <!-- Vehicle Filters -->
+      <div class="destinations-filters reveal">
+        <button class="filter-btn active" data-filter="all">All Vehicles</button>
+        <button class="filter-btn" data-filter="cabs">Cabs & Sedans</button>
+        <button class="filter-btn" data-filter="suv">Luxury SUVs</button>
+        <button class="filter-btn" data-filter="bus">Tempo & Bus</button>
+        <button class="filter-btn" data-filter="selfdrive">Self-Drive Bike / Auto</button>
+      </div>
+
+      <!-- Vehicle Cards Grid -->
+      <div class="destinations-grid">
+
+        <!-- Vehicle 1: Swift Dzire / Sedan -->
+        <div class="dest-card vehicle-card reveal" data-category="cabs">
+          <div class="dest-card-img">
+            <img src="images/swift_dzire.png" alt="Swift Dzire AC Sedan Cab" loading="lazy">
+            <span class="dest-card-category">AC Sedan Cab</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Swift Dzire / Etios Sedan</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pickup: Railway Station / Hotel / Bus Stand
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">4 Passengers</span>
+              <span class="facility-badge">AC</span>
+              <span class="facility-badge">Professional Driver</span>
+              <span class="facility-badge">Luggage Boot</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹1,800 <span class="price-subtext">/ day (With Driver)</span></div>
+                <div class="dest-card-rating">⭐ 4.9 (280+ bookings)</div>
+              </div>
+              <button onclick="openVehicleBookingModal('Swift Dzire / Etios Sedan (4-Seater Cab)')" class="btn btn-primary btn-sm">Book Vehicle</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle 2: Innova Crysta SUV -->
+        <div class="dest-card vehicle-card reveal" data-category="suv">
+          <div class="dest-card-img">
+            <img src="images/innova_crysta.png" alt="Innova Crysta Luxury 7-Seater SUV" loading="lazy">
+            <span class="dest-card-category">Luxury SUV</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Innova Crysta 7-Seater SUV</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pickup: Anywhere in Tiruvallur / Chennai
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">7 Passengers</span>
+              <span class="facility-badge">Dual AC</span>
+              <span class="facility-badge">Captain Seats</span>
+              <span class="facility-badge">Temple Tour Ready</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹3,200 <span class="price-subtext">/ day (With Driver)</span></div>
+                <div class="dest-card-rating">⭐ 4.9 (340+ bookings)</div>
+              </div>
+              <button onclick="openVehicleBookingModal('Innova Crysta (7-Seater Luxury SUV)')" class="btn btn-primary btn-sm">Book Vehicle</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle 3: Tempo Traveller -->
+        <div class="dest-card vehicle-card reveal" data-category="bus">
+          <div class="dest-card-img">
+            <img src="images/tempo_traveller.png" alt="12-Seater AC Tempo Traveller Mini Bus" loading="lazy">
+            <span class="dest-card-category">Mini Bus / Group</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Tempo Traveller (12-Seater AC)</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Ideal for Large Family & Pilgrimage Groups
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">12 Passengers</span>
+              <span class="facility-badge">AC</span>
+              <span class="facility-badge">Pushback Seats</span>
+              <span class="facility-badge">Music System</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹4,800 <span class="price-subtext">/ day (With Driver)</span></div>
+                <div class="dest-card-rating">⭐ 4.8 (190+ bookings)</div>
+              </div>
+              <button onclick="openVehicleBookingModal('Tempo Traveller (12-Seater AC Mini Bus)')" class="btn btn-primary btn-sm">Book Vehicle</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle 4: Self-Drive Scooty / Bike -->
+        <div class="dest-card vehicle-card reveal" data-category="selfdrive">
+          <div class="dest-card-img">
+            <img src="images/bikes_scooty.png" alt="Self Drive Scooty Activa / Royal Enfield Bike" loading="lazy">
+            <span class="dest-card-category">Self-Drive Bike</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Activa 6G / Royal Enfield Bike</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pickup: Tiruvallur Station Hub
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">Self Drive</span>
+              <span class="facility-badge">2 Helmets Included</span>
+              <span class="facility-badge">Unlimited km</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹450 <span class="price-subtext">/ day (Self-Drive)</span></div>
+                <div class="dest-card-rating">⭐ 4.7 (150+ rentals)</div>
+              </div>
+              <button onclick="openVehicleBookingModal('Self-Drive Scooty / Bike (Activa/Royal Enfield)')" class="btn btn-primary btn-sm">Book Vehicle</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle 5: Auto Rickshaw Day Package -->
+        <div class="dest-card vehicle-card reveal" data-category="selfdrive">
+          <div class="dest-card-img">
+            <img src="images/auto_rickshaw.png" alt="Local Auto Rickshaw Sightseeing Package" loading="lazy">
+            <span class="dest-card-category">Local Tour Auto</span>
+          </div>
+          <div class="dest-card-body">
+            <h3 class="dest-card-title">Tiruvallur Auto Rickshaw Tour</h3>
+            <div class="dest-card-location">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Covers Temples, Poondi & Local Markets
+            </div>
+            <div class="facilities-tags">
+              <span class="facility-badge">3 Passengers</span>
+              <span class="facility-badge">Local Guide Driver</span>
+              <span class="facility-badge">Full Day Tour</span>
+            </div>
+            <div class="dest-card-footer">
+              <div>
+                <div class="price-tag">₹800 <span class="price-subtext">/ full day</span></div>
+                <div class="dest-card-rating">⭐ 4.9 (210+ bookings)</div>
+              </div>
+              <button onclick="openVehicleBookingModal('Tiruvallur Auto Rickshaw Day Tour Package')" class="btn btn-primary btn-sm">Book Vehicle</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== EXPERIENCE SECTION ==================== -->
+  <section class="section-dark" id="experience">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title">Experience <span class="gold">Tiruvallur</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          Immerse yourself in unforgettable activities — from sacred temple darshan to flamingo bird watching and boating.
+        </p>
+      </div>
+
+      <div class="experience-grid">
+        <!-- Experience 1: Temple Visits -->
+        <div class="exp-card reveal" onclick="openDestDetail('veeraraghava')" style="cursor: pointer;" title="Click to view full details about Temple Darshan">
+          <img src="images/veeraraghava_temple.jpg" alt="Temple visit experience" loading="lazy">
+          <div class="exp-card-overlay">
+            <div class="exp-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V11l7-8 7 8v10M9 21v-6h6v6"/></svg>
+            </div>
+            <h3 class="exp-card-title">Temple Darshan</h3>
+            <p class="exp-card-text">Explore Sri Veeraraghava Temple & Tiruttani Murugan Temple sacred abodes</p>
+            <div style="font-size:0.75rem; color:var(--gold); font-weight:600; margin-top:8px; display:inline-flex; align-items:center; gap:4px;">🔍 Click to View Full Details &rarr;</div>
+          </div>
+        </div>
+
+        <!-- Experience 2: Bird Watching -->
+        <div class="exp-card reveal" onclick="openDestDetail('bird_sanctuary')" style="cursor: pointer;" title="Click to view full details about Flamingo Bird Watching">
+          <img src="images/pulicat_lake.png" alt="Bird watching in wetlands" loading="lazy">
+          <div class="exp-card-overlay">
+            <div class="exp-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <h3 class="exp-card-title">Flamingo Bird Watching</h3>
+            <p class="exp-card-text">Spot thousands of flamingos and migratory species at Pulicat Lagoon Sanctuary</p>
+            <div style="font-size:0.75rem; color:var(--gold); font-weight:600; margin-top:8px; display:inline-flex; align-items:center; gap:4px;">🔍 Click to View Full Details &rarr;</div>
+          </div>
+        </div>
+
+        <!-- Experience 3: Boating -->
+        <div class="exp-card reveal" onclick="openDestDetail('poondi')" style="cursor: pointer;" title="Click to view full details about Reservoir & Lagoon Boating">
+          <img src="images/poondi_reservoir.jpg" alt="Peaceful boating on reservoir" loading="lazy">
+          <div class="exp-card-overlay">
+            <div class="exp-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.5 0 2.5 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"/><path d="M12 2v8"/></svg>
+            </div>
+            <h3 class="exp-card-title">Reservoir & Lagoon Boating</h3>
+            <p class="exp-card-text">Enjoy serene boat rides at Poondi Reservoir and Pulicat Lake during sunset</p>
+            <div style="font-size:0.75rem; color:var(--gold); font-weight:600; margin-top:8px; display:inline-flex; align-items:center; gap:4px;">🔍 Click to View Full Details &rarr;</div>
+          </div>
+        </div>
+
+        <!-- Experience 4: Local Food -->
+        <div class="exp-card reveal" onclick="openDestDetail('banana_leaf')" style="cursor: pointer;" title="Click to view full details about Banana Leaf Food">
+          <img src="https://images.unsplash.com/photo-1630383249896-424e482df921?w=640&q=80&auto=format&fit=crop" alt="Traditional South Indian food on banana leaf" loading="lazy">
+          <div class="exp-card-overlay">
+            <div class="exp-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+            <h3 class="exp-card-title">Banana Leaf Food</h3>
+            <p class="exp-card-text">Taste authentic Tamil Nadu vegetarian meals and fresh coastal seafood</p>
+            <div style="font-size:0.75rem; color:var(--gold); font-weight:600; margin-top:8px; display:inline-flex; align-items:center; gap:4px;">🔍 Click to View Full Details &rarr;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TESTIMONIALS SECTION ==================== -->
+  <section class="section-darker" id="testimonials">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Traveler Reviews
+        </div>
+        <h2 class="section-title">What Travelers <span class="gold">Say</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          Real reviews from visitors who discovered Tiruvallur with Explore360.
+        </p>
+      </div>
+
+      <div class="testimonials-wrapper reveal">
+        <div class="testimonials-track">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card">
+            <div class="testimonial-stars">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="testimonial-text">"Explore360 made booking our stay near Tiruttani Murugan temple so effortless! The real photos of Pulicat Lake flamingos and Poondi Reservoir were true to life."</p>
+            <div class="testimonial-author">
+              <div style="background: linear-gradient(135deg, #D4A843, #B8922E); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; color: #0A0A0A; font-size: 1.1rem; flex-shrink: 0;">R</div>
+              <div>
+                <div class="testimonial-name">Ramya S.</div>
+                <div class="testimonial-location">Chennai, Tamil Nadu</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card">
+            <div class="testimonial-stars">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="testimonial-text">"The Pulicat Bird Sanctuary boating experience was unforgettable. Reserved a resort through Explore360 and enjoyed authentic coastal crab curry!"</p>
+            <div class="testimonial-author">
+              <div style="background: linear-gradient(135deg, #1A5C3A, #2A7D52); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; color: #FAFAFA; font-size: 1.1rem; flex-shrink: 0;">A</div>
+              <div>
+                <div class="testimonial-name">Arjun K.</div>
+                <div class="testimonial-location">Bangalore, Karnataka</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonials-nav">
+          <button class="testimonial-prev" aria-label="Previous review">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="testimonial-next" aria-label="Next review">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA SECTION ==================== -->
+  <section class="cta-section" id="plan-cta">
+    <div class="cta-bg"></div>
+    <div class="container">
+      <div class="cta-content reveal">
+        <div class="section-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Start Your Journey
+        </div>
+        <h2 class="section-title">Ready to Explore <span class="gold">Tiruvallur</span>?</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">
+          Plan your customized travel, reserve hotel stays, and discover traditional food with Explore360.
+        </p>
+        <div class="cta-actions">
+          <button onclick="openPlanMyTripModal()" class="btn btn-primary btn-lg">
+            Plan My Trip Now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <a href="#hotels" class="btn btn-outline btn-lg">Browse Hotels & Stays</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <div class="logo-icon">E3</div>
+            <span>Explore360</span>
+          </a>
+          <p>Your smart travel companion for discovering Tiruvallur District, Tamil Nadu.</p>
+          <div class="footer-social">
+            <a href="https://instagram.com/explore_360_tiruvallur" target="_blank" aria-label="Instagram" style="display:flex; align-items:center; gap:6px; width:auto; padding:0 12px;">
+              <svg viewBox="0 0 24 24" width="18" height="18"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <span style="font-size:0.8rem; font-weight:600;">@explore_360_tiruvallur</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#hotels">Hotels</a></li>
+            <li><a href="#restaurants">Restaurants</a></li>
+            <li><a href="#vehicles">Vehicles</a></li>
+            <li><a href="#experience">Things to Do</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Plan Trip</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="openPlanMyTripModal()">Trip Planner</a></li>
+            <li><a href="#hotels">Hotel Booking</a></li>
+            <li><a href="#restaurants">Table Reservation</a></li>
+            <li><a href="#vehicles">Vehicle Rental</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul>
+            <li>
+              <a href="tel:+919514379525" style="display:flex; align-items:center; gap:6px; color:var(--gold); font-weight:600;">
+                📞 +91 95143 79525
+              </a>
+            </li>
+            <li>
+              <a href="mailto:explore360tiruvallur@gmail.com" style="word-break:break-all;">
+                ✉️ explore360tiruvallur@gmail.com
+              </a>
+            </li>
+            <li>
+              <a href="https://instagram.com/explore_360_tiruvallur" target="_blank" style="color:var(--gold-light);">
+                📸 @explore_360_tiruvallur
+              </a>
+            </li>
+            <li style="color:var(--gray-400); font-size:0.82rem; margin-top:4px;">
+              📍 Tiruvallur District, Tamil Nadu, India
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Explore360 Tiruvallur. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== DESTINATION DETAIL MODAL ==================== -->
+  <div class="modal-backdrop" id="destDetailModal">
+    <div class="modal-box" style="max-width: 680px; padding: 0; overflow: hidden; border-radius: var(--radius-xl);">
+      <div style="position: relative; height: 280px; overflow: hidden;">
+        <img id="detailImg" src="" alt="Destination Image" style="width: 100%; height: 100%; object-fit: cover;">
+        <button class="modal-close" onclick="closeDestDetailModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(10,10,10,0.7); backdrop-filter: blur(10px); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); border: 1px solid rgba(255,255,255,0.2);">&times;</button>
+        <span id="detailCategory" style="position: absolute; bottom: 16px; left: 16px; padding: 6px 14px; background: rgba(10,10,10,0.75); backdrop-filter: blur(10px); border: 1px solid rgba(212, 168, 67, 0.3); border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; color: var(--gold-light); text-transform: uppercase; letter-spacing: 1px;">Category</span>
+      </div>
+
+      <div style="padding: 1.8rem 2rem 2rem; max-height: 60vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; gap: 1rem;">
+          <div>
+            <h3 id="detailTitle" style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--white); margin-bottom: 4px;">Destination Name</h3>
+            <div id="detailLocation" style="font-size: 0.85rem; color: var(--gold); display: flex; align-items: center; gap: 6px;">📍 Location</div>
+          </div>
+          <div id="detailRating" style="font-family: var(--font-accent); font-weight: 700; color: var(--gold); font-size: 1.1rem; background: var(--gold-subtle); border: 1px solid rgba(212,168,67,0.2); padding: 4px 12px; border-radius: var(--radius-md);">⭐ 4.8</div>
+        </div>
+
+        <p id="detailOverview" style="font-size: 0.92rem; color: var(--gray-200); line-height: 1.8; margin-bottom: 1.5rem;">Detailed description of the destination...</p>
+
+        <!-- Details Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: var(--black-elevated); padding: 1.2rem; border-radius: var(--radius-lg); border: 1px solid var(--black-border);">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--gray-400); font-family: var(--font-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">🕒 Opening Hours</div>
+            <div id="detailHours" style="font-size: 0.88rem; color: var(--white); font-weight: 600;">6:00 AM - 6:00 PM</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--gray-400); font-family: var(--font-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">🎟️ Entry Fee</div>
+            <div id="detailFee" style="font-size: 0.88rem; color: var(--white); font-weight: 600;">Free Entry</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--gray-400); font-family: var(--font-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">🗓️ Best Time to Visit</div>
+            <div id="detailBestTime" style="font-size: 0.88rem; color: var(--white); font-weight: 600;">Oct - Mar (Sunset)</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--gray-400); font-family: var(--font-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">🚗 Transport Access</div>
+            <div id="detailTransport" style="font-size: 0.88rem; color: var(--white); font-weight: 600;">Train / Bus / Cab</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <h4 style="font-family: var(--font-accent); font-size: 0.88rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.6rem;">Key Highlights & Activities</h4>
+          <p id="detailHighlights" style="font-size: 0.88rem; color: var(--gray-300); line-height: 1.6;">Highlights list...</p>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a id="detailMapBtn" href="https://maps.google.com/?q=Tiruvallur" target="_blank" class="btn btn-primary btn-sm" style="flex: 1; text-align: center; justify-content: center;">
+            📍 Get Directions on Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== REGISTER & LOGIN MODAL WITH OTP ==================== -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal-box" style="max-width: 450px;">
+      <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <div style="display:inline-flex; align-items:center; gap:6px; padding:3px 10px; background:rgba(46, 204, 113, 0.1); border:1px solid rgba(46, 204, 113, 0.25); border-radius:99px; font-size:0.72rem; color:#2ECC71; font-weight:600; margin-bottom:6px;">
+          🔒 Verified 2FA OTP Authentication
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; color: var(--white);">
+          <div style="width: 34px; height: 34px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 800; color: var(--black);">E3</div>
+          <span>Explore360</span>
+        </div>
+      </div>
+
+      <!-- Modal Tabs -->
+      <div style="display: flex; background: var(--black-elevated); padding: 4px; border-radius: var(--radius-full); margin-bottom: 1.2rem; border: 1px solid var(--black-border);" id="mAuthTabs">
+        <div class="auth-tab active" id="mTabReg" onclick="switchModalTab('reg')" style="flex:1; padding:8px; text-align:center; font-family:var(--font-accent); font-size:0.8rem; font-weight:600; color:var(--black); background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); border-radius:var(--radius-full); cursor:pointer;">1. Register</div>
+        <div class="auth-tab" id="mTabLog" onclick="switchModalTab('log')" style="flex:1; padding:8px; text-align:center; font-family:var(--font-accent); font-size:0.8rem; font-weight:600; color:var(--gray-400); border-radius:var(--radius-full); cursor:pointer;">2. Log In</div>
+      </div>
+
+      <!-- FORM 1: REGISTER -->
+      <div id="mStepRegister" style="display: block;">
+        <form onsubmit="handleModalRegisterSubmit(event)">
+          <div class="form-group">
+            <label for="mRegName">Full Name</label>
+            <input type="text" id="mRegName" class="form-control" placeholder="e.g. Rahul Sharma" required>
+          </div>
+          <div class="form-group">
+            <label for="mRegPhone">Mobile Number or Email</label>
+            <input type="text" id="mRegPhone" class="form-control" placeholder="+91 9876543210 or name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="mRegPass">Create Password</label>
+            <input type="password" id="mRegPass" class="form-control" placeholder="••••••••" required minlength="6">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.4rem;">Register & Send OTP</button>
+        </form>
+      </div>
+
+      <!-- FORM 2: LOGIN -->
+      <div id="mStepLogin" style="display: none;">
+        <form onsubmit="handleModalLoginSubmit(event)">
+          <div class="form-group">
+            <label for="mLogAcc">Registered Phone / Email</label>
+            <input type="text" id="mLogAcc" class="form-control" placeholder="+91 9876543210 or email@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label for="mLogPass">Password</label>
+            <input type="password" id="mLogPass" class="form-control" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.4rem;">Send Login OTP</button>
+        </form>
+      </div>
+
+      <!-- STEP 3: OTP VERIFICATION -->
+      <div id="mStepOTP" style="display: none; text-align: center;">
+        <p style="font-size: 0.9rem; color: var(--gold-light); margin-bottom: 0.6rem; font-weight: 500;" id="mOtpText">Enter 6-digit OTP code sent to your mobile</p>
+        
+        <div id="mOtpBanner" style="background: rgba(212, 168, 67, 0.15); border: 1px solid rgba(212, 168, 67, 0.4); border-radius: 8px; padding: 10px 14px; margin-bottom: 1rem; font-size: 0.88rem; color: var(--gold); font-weight: 600;">
+          📲 Simulated SMS Code: <span id="mOtpCodeDisplay" style="color: var(--white); letter-spacing: 4px; font-size: 1.15rem; font-family: monospace; font-weight: 700;"></span>
+          <button type="button" onclick="autoFillModalOtp()" style="background: var(--gold); color: var(--black); border: none; border-radius: 4px; padding: 3px 10px; font-size: 0.75rem; font-weight: 700; margin-left: 8px; cursor: pointer;">⚡ Auto-Fill</button>
+        </div>
+
+        <div class="otp-container">
+          <input type="text" maxlength="1" class="otp-input" id="mOtp1" onkeyup="moveModalOtp(event, this, 1)" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-input" id="mOtp2" onkeyup="moveModalOtp(event, this, 2)" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-input" id="mOtp3" onkeyup="moveModalOtp(event, this, 3)" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-input" id="mOtp4" onkeyup="moveModalOtp(event, this, 4)" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-input" id="mOtp5" onkeyup="moveModalOtp(event, this, 5)" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-input" id="mOtp6" onkeyup="moveModalOtp(event, this, 6)" autocomplete="off">
+        </div>
+        <button type="button" onclick="verifyModalOTPAndAuth()" class="btn btn-primary" style="width: 100%; margin-bottom: 0.6rem; padding: 14px; font-size: 1rem;">Verify OTP & Authenticate</button>
+        <button type="button" onclick="resetModalTabs()" class="btn btn-outline btn-sm" style="width: 100%;">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DESTINATION EXPLORE / TOUR BOOKING MODAL ==================== -->
+  <div class="modal-backdrop" id="tourBookingModal">
+    <div class="modal-box" style="max-width: 500px;">
+      <button class="modal-close" onclick="closeTourBookingModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="width: 44px; height: 44px; background: var(--gold-subtle); border: 1px solid rgba(212, 168, 67, 0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D4A843" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
+        <h3 class="modal-title" style="font-size: 1.4rem;">Book Destination Explore Tour</h3>
+        <p class="modal-subtitle" style="font-size: 0.85rem; color: var(--gold-light);">Customized guided tour, darshan & transport assistance</p>
+      </div>
+
+      <form id="tourBookingForm" onsubmit="handleTourBookingSubmit(event)">
+        <!-- Contact Box -->
+        <div style="background: var(--gold-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px dashed rgba(212, 168, 67, 0.25); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.78rem; font-family: var(--font-accent); color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; font-weight: 600;">
+            👤 Traveler Contact Details
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="tourName" style="color: var(--white);">Full Name *</label>
+              <input type="text" id="tourName" class="form-control" placeholder="e.g. Karthik Raj" required>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="tourPhone" style="color: var(--white);">Mobile Number *</label>
+              <input type="tel" id="tourPhone" class="form-control" placeholder="+91 9876543210" required pattern="[0-9+ ]{10,14}">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tourDestSelect">Target Destination Spot *</label>
+          <select id="tourDestSelect" class="form-control" required>
+            <option value="Poondi Reservoir">Poondi Reservoir (Dam & Sunset View)</option>
+            <option value="Pulicat Lake">Pulicat Lake (Brackish Water Lagoon & Boating)</option>
+            <option value="Pulicat Bird Sanctuary">Pulicat Bird Sanctuary (Flamingo Wildlife Tour)</option>
+            <option value="Sri Veeraraghava Perumal Temple">Sri Veeraraghava Perumal Temple (Divya Desam Darshan)</option>
+            <option value="Tiruttani Murugan Temple">Tiruttani Murugan Temple (Hilltop Sacred Abode)</option>
+            <option value="Pazhaverkadu Coastal Beach">Pazhaverkadu Coastal Beach & Dutch Fort</option>
+            <option value="Sri Panchamukha Anjaneyaswami Temple">Sri Panchamukha Anjaneyaswami Temple (5-Faced Anjaneya)</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+          <div class="form-group">
+            <label for="tourDate">Tour Date *</label>
+            <input type="date" id="tourDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="tourGuests">Tourists / Guests *</label>
+            <select id="tourGuests" class="form-control" onchange="autoMatchTourVehicleFromGuests()" required>
+              <option value="1 Traveler (Solo / Bike)">1 Traveler (Solo / Bike)</option>
+              <option value="1-3 Passengers (Auto Rickshaw)">1 - 3 Passengers (Auto Rickshaw Tour)</option>
+              <option value="3-4 Passengers (Swift Dzire / Etios Cab)" selected>3 - 4 Passengers (Swift Dzire / Etios Cab)</option>
+              <option value="5-7 Passengers (Innova Crysta SUV)">5 - 7 Passengers (Innova Crysta SUV)</option>
+              <option value="8-12 Passengers (Tempo Traveller)">8 - 12 Passengers (Tempo Traveller AC)</option>
+              <option value="11+ Bus Pilgrimage Group">11+ Bus Pilgrimage Group</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tourTransport">Select Tour Package & Vehicle Option *</label>
+          <select id="tourTransport" class="form-control" onchange="autoMatchGuestsFromVehicle()" required>
+            <option value="Swift Dzire / Etios Sedan (4-Seater Cab) + Guide" data-cab="1800" data-guide="200" data-guests="3-4 Passengers (Swift Dzire / Etios Cab)" selected>Swift Dzire / Etios Sedan Cab (Cab: ₹1,800 + Guide: ₹200 = ₹2,000)</option>
+            <option value="Innova Crysta (7-Seater Luxury SUV) + Guide" data-cab="2600" data-guide="200" data-guests="5-7 Passengers (Innova Crysta SUV)">Innova Crysta 7-Seater Luxury SUV (Cab: ₹2,600 + Guide: ₹200 = ₹2,800)</option>
+            <option value="Tempo Traveller (12-Seater AC Mini Bus) + Guide" data-cab="4000" data-guide="300" data-guests="8-12 Passengers (Tempo Traveller)">Tempo Traveller 12-Seater AC Mini Bus (Bus: ₹4,000 + Guide: ₹300 = ₹4,300)</option>
+            <option value="Tempo Traveller / Luxury Pilgrimage Bus + Guide" data-cab="4500" data-guide="500" data-guests="11+ Bus Pilgrimage Group">Tempo Traveller / Luxury Bus Tour (Bus: ₹4,500 + Guide: ₹500 = ₹5,000)</option>
+            <option value="Tiruvallur Auto Rickshaw Tour Package + Guide" data-cab="550" data-guide="200" data-guests="1-3 Passengers (Auto Rickshaw)">Tiruvallur Auto Rickshaw Tour Package (Auto: ₹550 + Guide: ₹200 = ₹750)</option>
+            <option value="Activa 6G / Royal Enfield Bike + Guide Plan" data-cab="450" data-guide="200" data-guests="1 Traveler (Solo / Bike)">Activa 6G / Royal Enfield Bike (Rental: ₹450 + Guide: ₹200 = ₹650)</option>
+            <option value="Without Vehicle (Guide Only - ₹200)" data-cab="0" data-guide="200" data-guests="1-4 Passengers">🚶 Without Vehicle (Certified Local Tour Guide Only - Guide Fee: ₹200)</option>
+            <option value="Without Guide (Cab Only - ₹1,800)" data-cab="1800" data-guide="0" data-guests="3-4 Passengers">🚗 Without Guide (Cab Only - ₹1,800)</option>
+            <option value="Without Guide & Without Vehicle (Self-Guided - ₹0)" data-cab="0" data-guide="0" data-guests="1-4 Passengers">🚶 Without Guide & Without Vehicle (Self-Guided Exploration - ₹0)</option>
+          </select>
+        </div>
+
+        <!-- Dynamic Price Breakdown Box -->
+        <div style="background: var(--gold-subtle); padding: 0.9rem 1.2rem; border-radius: var(--radius-md); border: 1px solid rgba(212, 168, 67, 0.3); margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 0.75rem; color: var(--gray-400); font-family: var(--font-accent); text-transform: uppercase; letter-spacing: 1px;">Itemized Cab & Guide Total Fee</div>
+            <div id="tourPriceBreakdown" style="font-size: 0.82rem; color: var(--gray-200); margin-top: 3px; word-break: break-word;">Cab: ₹1,800 + Guide: ₹200</div>
+          </div>
+          <div style="text-align: right; flex-shrink: 0;">
+            <div id="tourTotalPrice" style="font-size: 1.5rem; font-family: var(--font-heading); font-weight: 800; color: var(--gold);">₹2,000</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.6rem;">
+          🌟 Confirm Tour Booking
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== VEHICLE BOOKING MODAL ==================== -->
+  <div class="modal-backdrop" id="vehicleBookingModal">
+    <div class="modal-box" style="max-width: 500px;">
+      <button class="modal-close" onclick="closeVehicleBookingModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="width: 44px; height: 44px; background: var(--gold-subtle); border: 1px solid rgba(212, 168, 67, 0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D4A843" stroke-width="2" width="22" height="22"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3 class="modal-title" style="font-size: 1.4rem;">Book Vehicle / Cab Rental</h3>
+        <p class="modal-subtitle" style="font-size: 0.85rem; color: var(--gold-light);">Sanitized vehicles with verified drivers or self-drive</p>
+      </div>
+
+      <form id="vehicleBookingForm" onsubmit="handleVehicleBookingSubmit(event)">
+        <!-- Contact Box -->
+        <div style="background: var(--gold-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px dashed rgba(212, 168, 67, 0.25); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.78rem; font-family: var(--font-accent); color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; font-weight: 600;">
+            👤 Passenger Contact Details
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="vName" style="color: var(--white);">Full Name *</label>
+              <input type="text" id="vName" class="form-control" placeholder="e.g. Anitha Sundaram" required>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="vPhone" style="color: var(--white);">Mobile Number *</label>
+              <input type="tel" id="vPhone" class="form-control" placeholder="+91 9876543210" required pattern="[0-9+ ]{10,14}">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="vSelect">Select Vehicle / Service *</label>
+          <select id="vSelect" class="form-control" onchange="updateVehiclePrice()" required>
+            <option value="Swift Dzire / Etios Sedan (4-Seater Cab)" data-base="1400" data-driver="400">Swift Dzire / Etios Sedan (4-Seater Cab)</option>
+            <option value="Innova Crysta (7-Seater Luxury SUV)" data-base="2600" data-driver="600">Innova Crysta (7-Seater Luxury SUV)</option>
+            <option value="Tempo Traveller (12-Seater AC Mini Bus)" data-base="4000" data-driver="800">Tempo Traveller (12-Seater AC Mini Bus)</option>
+            <option value="Self-Drive Scooty / Bike (Activa/Royal Enfield)" data-base="450" data-driver="300">Activa 6G / Royal Enfield Bike</option>
+            <option value="Tiruvallur Auto Rickshaw Tour Package" data-base="550" data-driver="250">Tiruvallur Auto Rickshaw Tour Package</option>
+          </select>
+        </div>
+
+        <!-- Driver Preference Option with Pricing -->
+        <div class="form-group" style="background: var(--black-elevated); padding: 0.8rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--black-border);">
+          <label style="color: var(--gold); margin-bottom: 0.5rem; display: block; font-weight: 600;">🚗 Driver Preference & Pricing Mode *</label>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--white); font-size: 0.85rem; font-weight: 500;">
+              <input type="radio" name="vDriverOpt" value="With Professional Driver" checked onchange="updateVehiclePrice()" style="accent-color: var(--gold); width: 16px; height: 16px;">
+              👨‍✈️ With Driver
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--white); font-size: 0.85rem; font-weight: 500;">
+              <input type="radio" name="vDriverOpt" value="Without Driver (Self-Drive Rental)" onchange="updateVehiclePrice()" style="accent-color: var(--gold); width: 16px; height: 16px;">
+              🔑 Without Driver (Self-Drive)
+            </label>
+          </div>
+        </div>
+
+        <!-- Dynamic Price Display Box -->
+        <div style="background: var(--gold-subtle); padding: 0.9rem 1.2rem; border-radius: var(--radius-md); border: 1px solid rgba(212, 168, 67, 0.3); margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--gray-400); font-family: var(--font-accent); text-transform: uppercase; letter-spacing: 1px;">Calculated Rate</div>
+            <div id="vPriceBreakdown" style="font-size: 0.8rem; color: var(--gray-300); margin-top: 2px;">Base: ₹1,400 + Driver: ₹400</div>
+          </div>
+          <div style="text-align: right;">
+            <div id="vTotalPrice" style="font-size: 1.4rem; font-family: var(--font-heading); font-weight: 800; color: var(--gold);">₹1,800 / day</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+          <div class="form-group">
+            <label for="vDate">Pickup Date *</label>
+            <input type="date" id="vDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="vDuration">Rental Duration *</label>
+            <select id="vDuration" class="form-control" required>
+              <option value="1 Day (Full Day)">1 Day (Full Day)</option>
+              <option value="2 Days Trip">2 Days Trip</option>
+              <option value="3 Days Trip">3 Days Trip</option>
+              <option value="4+ Days Customized Tour">4+ Days Customized Tour</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+          <div class="form-group">
+            <label for="vPickupLoc">Pickup Location *</label>
+            <select id="vPickupLoc" class="form-control" required>
+              <option value="Tiruvallur Railway Station">Tiruvallur Railway Station</option>
+              <option value="Tiruvallur Bus Stand">Tiruvallur Bus Stand</option>
+              <option value="Hotel / Resort Pickup">Hotel / Resort Pickup</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="vPassengers">Passengers *</label>
+            <select id="vPassengers" class="form-control" required>
+              <option value="1-2 Passengers">1 - 2 Passengers</option>
+              <option value="3-4 Passengers" selected>3 - 4 Passengers</option>
+              <option value="5-7 Passengers">5 - 7 Passengers</option>
+              <option value="8-12 Passengers">8 - 12 Passengers</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.6rem;">
+          🚗 Confirm Vehicle Booking & Send SMS
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== RESTAURANT TABLE BOOKING MODAL ==================== -->
+  <div class="modal-backdrop" id="tableBookingModal">
+    <div class="modal-box" style="max-width: 480px;">
+      <button class="modal-close" onclick="closeTableBookingModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="width: 44px; height: 44px; background: var(--gold-subtle); border: 1px solid rgba(212, 168, 67, 0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D4A843" stroke-width="2" width="22" height="22"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <h3 class="modal-title" style="font-size: 1.4rem;">Reserve a Restaurant Table</h3>
+        <p class="modal-subtitle" id="tableRestSubtitle" style="font-size: 0.85rem; color: var(--gold-light);">Select date, timing slot and number of guests</p>
+      </div>
+      
+      <form id="tableBookingForm" onsubmit="handleTableBookingSubmit(event)">
+        <!-- Customer Details First -->
+        <div style="background: var(--gold-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px dashed rgba(212, 168, 67, 0.25); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.78rem; font-family: var(--font-accent); color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; font-weight: 600;">
+            👤 Customer Contact Details
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="tblName" style="color: var(--white);">Full Name *</label>
+              <input type="text" id="tblName" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="tblPhone" style="color: var(--white);">Mobile Number *</label>
+              <input type="tel" id="tblPhone" class="form-control" placeholder="+91 9876543210" required pattern="[0-9+ ]{10,14}">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tblRestSelect">Select Restaurant</label>
+          <select id="tblRestSelect" class="form-control" required>
+            <option value="Qazeen Fine Dine Restaurant">Qazeen Fine Dine Restaurant</option>
+            <option value="Zaira BBQ Restaurant & Banquet">Zaira BBQ Restaurant & Banquet</option>
+            <option value="Ganga Hotel (Pure Veg)">Ganga Hotel (Pure Veg)</option>
+            <option value="Nithya Amirtham (Pure Veg)">Nithya Amirtham (Pure Veg)</option>
+            <option value="Lamiya Multi Cuisine Restaurant">Lamiya Multi Cuisine Restaurant</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+          <div class="form-group">
+            <label for="tblDate">Date of Booking *</label>
+            <input type="date" id="tblDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="tblTime">Dining Time Slot *</label>
+            <select id="tblTime" class="form-control" required>
+              <option value="Breakfast - 8:30 AM">Breakfast - 8:30 AM</option>
+              <option value="Breakfast - 10:00 AM">Breakfast - 10:00 AM</option>
+              <option value="Lunch - 12:30 PM">Lunch - 12:30 PM</option>
+              <option value="Lunch - 1:30 PM" selected>Lunch - 1:30 PM</option>
+              <option value="High Tea - 5:00 PM">High Tea - 5:00 PM</option>
+              <option value="Dinner - 7:30 PM">Dinner - 7:30 PM</option>
+              <option value="Dinner - 8:30 PM">Dinner - 8:30 PM</option>
+              <option value="Late Dinner - 9:30 PM">Late Dinner - 9:30 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tblMembers">How Many Members Coming? *</label>
+          <select id="tblMembers" class="form-control" required>
+            <option value="1 Member (Solo Table)">1 Member (Solo Table)</option>
+            <option value="2 Members (Couple Table)" selected>2 Members (Couple Table)</option>
+            <option value="3-4 Members (Family Table)">3 - 4 Members (Family Table)</option>
+            <option value="5-7 Members (Large Group)">5 - 7 Members (Large Group)</option>
+            <option value="8-12 Members (Party Table)">8 - 12 Members (Party Table)</option>
+            <option value="15+ Members (Banquet Hall Booking)">15+ Members (Banquet Hall Booking)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.6rem;">
+          🍽️ Confirm Table Booking & Send SMS
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== ALL-IN-ONE PLAN MY TRIP BOOKING MODAL ==================== -->
+  <div class="modal-backdrop" id="planMyTripModal">
+    <div class="modal-box" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
+      <button class="modal-close" onclick="closePlanMyTripModal()">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="width: 48px; height: 48px; background: var(--gold-subtle); border: 1px solid rgba(212, 168, 67, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+          <span style="font-size: 1.5rem;">🌟</span>
+        </div>
+        <h3 class="modal-title" style="font-size: 1.5rem;">Plan My Complete Tiruvallur Trip</h3>
+        <p class="modal-subtitle" style="font-size: 0.85rem; color: var(--gold-light);">Book all 4 services in a single request: Treasures, Hotels, Dining & Cabs</p>
+      </div>
+
+      <!-- Contact Banner Notice -->
+      <div style="background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1.2rem; font-size: 0.82rem; text-align: center; color: var(--gold);">
+        📞 Official Booking Support: <strong>+91 95143 79525</strong> | ✉️ <strong>explore360tiruvallur@gmail.com</strong>
+      </div>
+
+      <form id="planMyTripForm" onsubmit="handlePlanMyTripSubmit(event)">
+        
+        <!-- STEP 1: Traveler Contact Details -->
+        <div style="background: var(--gold-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px dashed rgba(212, 168, 67, 0.25); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.78rem; font-family: var(--font-accent); color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; font-weight: 600;">
+            👤 1. Traveler Contact Details (2FA Verified)
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="planName" style="color: var(--white);">Full Name *</label>
+              <input type="text" id="planName" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="planPhone" style="color: var(--white);">Mobile Number *</label>
+              <input type="tel" id="planPhone" class="form-control" placeholder="+91 9876543210" required pattern="[0-9+ ]{10,14}">
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Service 1 - Discover Tiruvallur's Treasures -->
+        <div style="background: var(--black-elevated); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--black-border); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.85rem; font-family: var(--font-heading); color: var(--white); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 6px;">
+            <span style="color: var(--gold);">🗺️ Service 1:</span> Discover Tiruvallur's Treasures (Spot & Guide)
+          </div>
+          
+          <div class="form-group">
+            <label for="planDestSelect">Target Tourist Destination / Package Spot</label>
+            <select id="planDestSelect" class="form-control">
+              <option value="All 7 Key Spots Circuit Tour (Poondi, Pulicat, Temples & Beach)">🌟 All 7 Key Spots Circuit Tour (Poondi, Pulicat, Temples & Beach)</option>
+              <option value="Poondi Reservoir (Dam & Sunset View)">Poondi Reservoir (Dam & Sunset View)</option>
+              <option value="Pulicat Lake & Bird Sanctuary">Pulicat Lake & Bird Sanctuary (Wildlife & Boating)</option>
+              <option value="Sri Veeraraghava Perumal Temple">Sri Veeraraghava Perumal Temple (Divya Desam Darshan)</option>
+              <option value="Tiruttani Murugan Temple">Tiruttani Murugan Temple (Hilltop Sacred Abode)</option>
+              <option value="Pazhaverkadu Coastal Beach">Pazhaverkadu Coastal Beach & Dutch Fort</option>
+              <option value="Sri Panchamukha Anjaneyaswami Temple">Sri Panchamukha Anjaneyaswami Temple (5-Faced Anjaneya)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin: 0;">
+            <label for="planGuideOpt">Tour Guide Preference</label>
+            <select id="planGuideOpt" class="form-control" onchange="updatePlanMyTripPrice()">
+              <option value="Include Tour Guide" data-guide="200" selected>🙋 Include Authorised Tour Guide (+₹200)</option>
+              <option value="Self-Guided Tour" data-guide="0">🚶 Self-Guided Exploration (₹0)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- STEP 3: Service 2 - Hotels & Stays -->
+        <div style="background: var(--black-elevated); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--black-border); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.85rem; font-family: var(--font-heading); color: var(--white); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 6px;">
+            <span style="color: var(--gold);">🏨 Service 2:</span> Hotels & Stays Reservation
+          </div>
+          
+          <div class="form-group">
+            <label for="planHotelSelect">Select Hotel / Stay Option</label>
+            <select id="planHotelSelect" class="form-control" onchange="updatePlanMyTripPrice()">
+              <option value="No Hotel Needed" data-price="0">❌ No Hotel Needed (Day Trip)</option>
+              <option value="Rajam Hotel (Deluxe AC Room)" data-price="1800" selected>🏨 Rajam Hotel (Deluxe AC Room - ₹1,800/night)</option>
+              <option value="Hotel Tamil Nadu TTDC (Heritage Stay)" data-price="2200">🏨 Hotel Tamil Nadu TTDC (Heritage Stay - ₹2,200/night)</option>
+              <option value="Hygge Park (Boutique Stay & Pool)" data-price="3500">🏊 Hygge Park (Boutique Stay & Pool - ₹3,500/night)</option>
+              <option value="Graces Resort (Pulicat Waterfront)" data-price="4200">🌅 Graces Resort (Pulicat Waterfront - ₹4,200/night)</option>
+              <option value="SR Residency (Budget Friendly)" data-price="1200">🛏️ SR Residency (Budget Friendly - ₹1,200/night)</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="planCheckIn">Check-in Date</label>
+              <input type="date" id="planCheckIn" class="form-control">
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="planNights">Duration (Nights)</label>
+              <select id="planNights" class="form-control" onchange="updatePlanMyTripPrice()">
+                <option value="1 Night" selected>1 Night</option>
+                <option value="2 Nights">2 Nights</option>
+                <option value="3 Nights">3 Nights</option>
+                <option value="4+ Nights">4+ Nights</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Service 3 - Restaurants & Table Booking -->
+        <div style="background: var(--black-elevated); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--black-border); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.85rem; font-family: var(--font-heading); color: var(--white); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 6px;">
+            <span style="color: var(--gold);">🍽️ Service 3:</span> Restaurants & Table Reservation
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="planRestSelect">Select Restaurant</label>
+              <select id="planRestSelect" class="form-control">
+                <option value="No Dining Needed">❌ No Dining Reserved</option>
+                <option value="Qazeen Fine Dine Restaurant" selected>Qazeen Fine Dine Restaurant</option>
+                <option value="Zaira BBQ Restaurant & Banquet">Zaira BBQ Restaurant & Banquet</option>
+                <option value="Ganga Hotel (Pure Veg)">Ganga Hotel (Pure Veg)</option>
+                <option value="Nithya Amirtham (Pure Veg)">Nithya Amirtham (Pure Veg)</option>
+                <option value="Lamiya Multi Cuisine Restaurant">Lamiya Multi Cuisine Restaurant</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="planRestSlot">Dining Slot</label>
+              <select id="planRestSlot" class="form-control">
+                <option value="Breakfast - 8:30 AM">Breakfast - 8:30 AM</option>
+                <option value="Lunch - 1:30 PM" selected>Lunch - 1:30 PM</option>
+                <option value="High Tea - 5:00 PM">High Tea - 5:00 PM</option>
+                <option value="Dinner - 7:30 PM">Dinner - 7:30 PM</option>
+                <option value="Late Dinner - 9:00 PM">Late Dinner - 9:00 PM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Service 4 - Book Vehicles & Cabs -->
+        <div style="background: var(--black-elevated); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--black-border); margin-bottom: 1.2rem;">
+          <div style="font-size: 0.85rem; font-family: var(--font-heading); color: var(--white); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 6px;">
+            <span style="color: var(--gold);">🚗 Service 4:</span> Book Vehicles & Cabs
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+            <div class="form-group" style="margin: 0;">
+              <label for="planGuestsSelect">Tourists / Guests *</label>
+              <select id="planGuestsSelect" class="form-control" onchange="autoMatchPlanVehicleFromGuests()">
+                <option value="1-2 Guests">1 - 2 Tourists / Guests</option>
+                <option value="3-4 Guests" selected>3 - 4 Tourists / Guests</option>
+                <option value="5-7 Guests">5 - 7 Tourists / Guests</option>
+                <option value="8-12 Guests">8 - 12 Tourists / Guests</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="planVehicleSelect">Vehicle Choice *</label>
+              <select id="planVehicleSelect" class="form-control" onchange="autoMatchPlanGuestsFromVehicle()">
+                <option value="Tiruvallur Auto Rickshaw Tour" data-cab="500" data-guests="1-2 Guests">🛺 Tiruvallur Auto Rickshaw Tour (₹500 / day)</option>
+                <option value="Activa 6G / Royal Enfield Bike" data-cab="700" data-guests="1-2 Guests">🛵 Activa 6G / Royal Enfield Bike (₹700 / day)</option>
+                <option value="Swift Dzire / Etios Sedan" data-cab="1800" data-guests="3-4 Guests" selected>🚗 Swift Dzire / Etios Sedan (₹1,800 / day)</option>
+                <option value="Innova Crysta 7-Seater SUV" data-cab="2500" data-guests="5-7 Guests">🚙 Innova Crysta 7-Seater SUV (₹2,500 / day)</option>
+                <option value="Tempo Traveller (12-Seater AC)" data-cab="3800" data-guests="8-12 Guests">🚐 Tempo Traveller (12-Seater AC - ₹3,800 / day)</option>
+                <option value="No Vehicle Needed" data-cab="0" data-guests="1-2 Guests">❌ No Vehicle (Self Transport)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Driver Option (With Driver / Without Driver) -->
+          <div style="background: var(--gold-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid rgba(212, 168, 67, 0.25);">
+            <label style="color: var(--gold); font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; display: block;">👨‍✈️ Driver Preference *</label>
+            <div style="display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap;">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--white); font-size: 0.82rem; font-weight: 500;">
+                <input type="radio" name="planDriverOpt" value="With Driver" checked onchange="updatePlanMyTripPrice()" style="accent-color: var(--gold); width: 16px; height: 16px;">
+                👨‍✈️ With Professional Driver
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--white); font-size: 0.82rem; font-weight: 500;">
+                <input type="radio" name="planDriverOpt" value="Without Driver (Self-Drive)" onchange="updatePlanMyTripPrice()" style="accent-color: var(--gold); width: 16px; height: 16px;">
+                🔑 Without Driver (Self-Drive Rental)
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC PRICE BREAKDOWN -->
+        <div style="background: var(--black-elevated); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--gold); margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-accent);">Est. Package Fee Breakdown</div>
+            <div id="planPriceBreakdown" style="font-size: 0.85rem; color: var(--gold-light); font-weight: 500; margin-top: 2px;">
+              Cab: ₹1,800 + Guide: ₹200 + Hotel: ₹1,800
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.72rem; color: var(--gray-400); text-transform: uppercase;">Total Estimated Amount</div>
+            <div id="planTotalPrice" style="font-size: 1.4rem; font-family: var(--font-heading); color: var(--gold); font-weight: 700;">
+              ₹3,800
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1rem; font-weight: 700;">
+          🌟 Confirm All-In-One Package Booking & Send SMS
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== BOOKING MODAL ==================== -->
+  <div class="modal-backdrop" id="bookingModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h3 class="modal-title" id="modalTitle">Book Hotel Room</h3>
+      <p class="modal-subtitle" id="modalSubtitle">Select property and check-in details</p>
+      
+      <form id="bookingForm">
+        <div class="form-group">
+          <label for="bookHotelSelect">Select Hotel / Resort</label>
+          <select id="bookHotelSelect" class="form-control" required>
+            <option value="Regency Tiruttani (GRT Hotels) - ₹3,500/night">Regency Tiruttani (GRT Hotels) - ₹3,500/night</option>
+            <option value="Hotel Tamil Nadu TTDC Tiruttani - ₹1,800/night">Hotel Tamil Nadu TTDC Tiruttani - ₹1,800/night</option>
+            <option value="Pulicat Eco Beach Resort - ₹2,800/night">Pulicat Eco Beach Resort - ₹2,800/night</option>
+            <option value="Rajam Hotel Tiruvallur - ₹1,500/night">Rajam Hotel Tiruvallur - ₹1,500/night</option>
+            <option value="Hygge Park Hotel Tiruvallur - ₹2,200/night">Hygge Park Hotel Tiruvallur - ₹2,200/night</option>
+            <option value="SR Residency Tiruvallur - ₹1,200/night">SR Residency Tiruvallur - ₹1,200/night</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="bookName">Full Name</label>
+          <input type="text" id="bookName" class="form-control" placeholder="e.g. Rahul Sharma" required>
+        </div>
+        <div class="form-group">
+          <label for="bookPhone">Phone Number</label>
+          <input type="tel" id="bookPhone" class="form-control" placeholder="+91 98765 43210" required>
+        </div>
+        <div class="form-group">
+          <label for="bookDate">Check-in / Visit Date</label>
+          <input type="date" id="bookDate" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="bookGuests">Number of Guests</label>
+          <select id="bookGuests" class="form-control">
+            <option value="1">1 Person</option>
+            <option value="2" selected>2 Guests</option>
+            <option value="3-4">3 - 4 Family Members</option>
+            <option value="5+">5+ Group</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Confirm Hotel Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MY BOOKINGS & TRACKING MODAL ==================== -->
+  <div class="modal-backdrop" id="myBookingsModal">
+    <div class="modal-box" style="max-width: 620px;">
+      <button class="modal-close" onclick="closeMyBookingsModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <div style="width: 44px; height: 44px; background: var(--gold-subtle); border: 1px solid rgba(212, 168, 67, 0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D4A843" stroke-width="2" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3 class="modal-title" style="font-size: 1.4rem;">📋 My Bookings & Track Status</h3>
+        <p class="modal-subtitle" style="font-size: 0.85rem; color: var(--gold-light); margin-bottom: 0.8rem;">View real-time status or cancel active reservations</p>
+      </div>
+
+      <!-- Phone Number Search Bar for Guest & Registered Users -->
+      <div style="background: var(--black-elevated); padding: 0.9rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--black-border); margin-bottom: 1rem;">
+        <label for="trackPhoneInput" style="display: block; font-size: 0.8rem; font-family: var(--font-accent); color: var(--gold); margin-bottom: 6px; font-weight: 600;">
+          📱 Enter Mobile Number to Track Your Bookings
+        </label>
+        <div style="display: flex; gap: 8px;">
+          <input type="tel" id="trackPhoneInput" class="form-control" placeholder="e.g. 9876543210" style="flex: 1;" onkeypress="if(event.key==='Enter') searchBookingsByInput()">
+          <button type="button" onclick="searchBookingsByInput()" class="btn btn-primary btn-sm" style="white-space: nowrap; padding: 0 16px;">
+            🔍 Track Status
+          </button>
+        </div>
+      </div>
+
+      <div id="myBookingsUserBadge" style="background: var(--gold-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px dashed rgba(212, 168, 67, 0.3); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+        <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">
+          👤 Customer: <span id="myBookingsUserName" style="color: var(--gold);">Guest</span>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--gray-300);" id="myBookingsUserPhone">📞 N/A</div>
+      </div>
+
+      <div id="myBookingsList" style="display: flex; flex-direction: column; gap: 1rem; max-height: 50vh; overflow-y: auto; padding-right: 4px;">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BOOKING RECEIPT & QR CODE MODAL ==================== -->
+  <div class="modal-backdrop" id="bookingReceiptModal">
+    <div class="modal-box" style="max-width: 540px; padding: 2rem;" id="printableReceiptArea">
+      <button class="modal-close" onclick="closeBookingReceiptModal()">&times;</button>
+
+      <!-- Receipt Header -->
+      <div style="text-align: center; border-bottom: 2px dashed var(--gold); padding-bottom: 1.2rem; margin-bottom: 1.2rem;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px;">
+          <div class="logo-icon" style="width: 32px; height: 32px; font-size: 0.85rem;">E3</div>
+          <span style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--white); font-weight: 700;">Explore360 <span class="gold">Tiruvallur</span></span>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--gold-light); letter-spacing: 1.5px; text-transform: uppercase; font-family: var(--font-accent); font-weight: 600;">
+          Official Booking E-Receipt & Entry Pass
+        </div>
+        <div style="font-size: 0.85rem; color: var(--gray-300); margin-top: 6px;">
+          Receipt No: <strong style="color: var(--gold);" id="rcptNoText">EXP360-REC-10025</strong>
+        </div>
+      </div>
+
+      <!-- Customer & Booking Details Card -->
+      <div style="background: var(--black-elevated); border: 1px solid var(--black-border); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.8rem;">
+          <div>
+            <div style="font-size: 0.72rem; color: var(--gray-400); text-transform: uppercase; font-family: var(--font-accent);">Customer Name</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--white);" id="rcptCustomerName">Anand Kumar</div>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--gray-400); text-transform: uppercase; font-family: var(--font-accent);">Mobile Number</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--gold);" id="rcptCustomerPhone">📞 9876543210</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.72rem; color: var(--gray-400); text-transform: uppercase; font-family: var(--font-accent); margin-bottom: 2px;">Type of Booking</div>
+          <div style="font-size: 1rem; font-weight: 700; color: var(--gold-light);" id="rcptBookingType">🏨 Hotel Room Stay</div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.72rem; color: var(--gray-400); text-transform: uppercase; font-family: var(--font-accent); margin-bottom: 2px;">Item / Property Title</div>
+          <div style="font-size: 1.05rem; font-weight: 800; color: var(--white);" id="rcptItemTitle">Regency Tiruttani by GRT Hotels</div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.72rem; color: var(--gray-400); text-transform: uppercase; font-family: var(--font-accent); margin-bottom: 2px;">Reservation Details</div>
+          <div style="font-size: 0.85rem; color: var(--gray-300); line-height: 1.4;" id="rcptDetails">Check-in Date: 2026-09-30 | Guests: 2 Guests</div>
+        </div>
+      </div>
+
+      <!-- QR Code & Status Box -->
+      <div style="background: rgba(212, 168, 67, 0.08); border: 1px solid rgba(212, 168, 67, 0.25); border-radius: var(--radius-md); padding: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <div style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; font-family: var(--font-accent);">Booking Status</div>
+          <div id="rcptStatusBadge" style="margin-top: 4px;">
+            <span class="status-badge status-approved">✅ Confirmed</span>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--gray-400); margin-top: 8px;">Scan QR Code at check-in or present to guide</div>
+        </div>
+        <div style="text-align: center; background: #FFF; padding: 6px; border-radius: 8px;">
+          <img id="rcptQRCodeImg" src="" alt="Booking Receipt QR Code" style="width: 110px; height: 110px; display: block;">
+        </div>
+      </div>
+
+      <!-- Print & Action Buttons -->
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" onclick="printBookingReceipt()" class="btn btn-primary btn-sm" style="flex: 1; padding: 10px;">
+          🖨️ Print / Save Receipt
+        </button>
+        <button type="button" onclick="closeBookingReceiptModal()" class="btn btn-outline btn-sm" style="padding: 10px 18px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BACK TO TOP ==================== -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+</body>
+</html>
